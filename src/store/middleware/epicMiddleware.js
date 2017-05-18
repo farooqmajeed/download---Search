@@ -6,7 +6,7 @@ export default class AudioListEpic {
     static getAudioData(actions$) {
         return actions$.ofType(AudioActions.GET_DATA)
             .mergeMap((actions$) => {
-                return Observable.ajax({ url: 'http://127.0.0.1:5000/search', method: 'POST', responseType: 'audio/mp4', body: { fileList: actions$.payload } })
+                return Observable.ajax({ url: 'http://127.0.0.1:5000/search', method: 'POST', responseType: 'audio/mp4', body: { fileList: actions$.payload }, headers : {"content-type":"application/json"} })
                     .do((data) => {
                         console.log("data >> ", data);
                     })
