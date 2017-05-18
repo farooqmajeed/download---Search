@@ -4,27 +4,53 @@ import styles from './AudioListStyle.js'
 import SvgIconSearch from 'material-ui/svg-icons/action/search'
 
 class AudioList extends Component {
+
     constructor(props) {
         super(props);
+        this.state = {
+            progressbar: false,
+            valid: '',
+            inputValidation: true
+
+        }
         this.searchFiles = this.searchFiles.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     downloadFiles = () => {
         if (this.refs && this.refs.search && this.refs.search.getValue()) {
-            var url = " http://127.0.0.1:5000/downloadFile?filename=" + this.refs.search.getValue();
+            var url = " http://127.0.0.1:5000/downloadFile?filenameList=" + this.refs.search.getValue();
             window.location.href = url;
         }
     }
 
 
     searchFiles(e) {
+        this.setState({
+            progressbar: true
+        })
         if (this.refs && this.refs.search && this.refs.search.getValue()) {
             this.props.fetchAudioData(this.refs.search.getValue());
+
         }
+    }
+
+    handleChange(e) {
+
+        this.setState({
+            valid: e.target.value
+        })
+        if (this.state.valid.length == 9) {
+            this.state.inputValidation = false;
+        }
+
+
+
     }
 
 
     render() {
+        var searchInputLength = true
         let download = this.props.file;
         console.log("download", download);
         let fileName = this.props.audioList;
@@ -37,10 +63,9 @@ class AudioList extends Component {
             });
 
         }
-
         return (
             <div >
-                <MUI.Card style={styles.muiListContainer}>
+                <MUI.Card style={styles.muiListContainer} >
                     <MUI.AppBar showMenuIconButton={false} style={styles.appbarContainer} >
                         <MUI.Avatar icon={<SvgIconSearch />} style={styles.searchBar} />
                         <MUI.TextField
@@ -48,10 +73,12 @@ class AudioList extends Component {
                             hintText="Test searching"
                             fullWidth={true}
                             style={styles.textFeild}
+                            value={this.state.valid}
+                            onChange={this.handleChange}
                             />
 
                         <div>
-                            <MUI.RaisedButton label="Search" primary={true} onTouchTap={this.searchFiles} />
+                            <MUI.RaisedButton label="Search"   style={styles.searchbtn} primary={true} disabled={this.state.inputValidation} onTouchTap={this.searchFiles} />
                         </div>
                     </MUI.AppBar>
                     <br />
@@ -77,8 +104,12 @@ class AudioList extends Component {
                         }) : false}
 
                     </div>
-
+                    {this.state.progressbar == true ? <MUI.CircularProgress style = {styles.progress} size={80}>
+                        autoHideDuration ={3000}
+                    </MUI.CircularProgress> : false}
                 </MUI.Card>
+
+
                 <br />
 
             </div>
