@@ -10,6 +10,7 @@ function mapStateToProps(state) {
   console.log("state", state);
   return {
     audioList: state.epicReducer.audioList,
+    downloadList: state.epicReducer.downloadList
   };
 }
 
@@ -18,6 +19,9 @@ function mapDispatchToProps(dispatch) {
   return {
     fetchAudioData: function (data) {
       return dispatch(AudioActions.getData(data))
+    },
+     fetchDownloadData: function (data) {
+      return dispatch(AudioActions.getDownloadData(data))
     }
   };
 }
@@ -60,7 +64,7 @@ class Navigation extends Component {
   render() {
     return (
       <div className="navigation-container">
-        <MUI.AppBar style={this.props.styles} title="Bulk Audio downloader"
+        <MUI.AppBar style={this.props.styles} title="Bulk Audio Downloader"
           onLeftIconButtonTouchTap={this.props.drawerToggle}
           />
         <MUI.Drawer open={this.props.drawerOpen} docked={false}
