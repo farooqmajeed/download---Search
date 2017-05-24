@@ -7,7 +7,8 @@ import epicReducer from './reducers/epicReducer';
 
 // combining Epics
  export const rootEpic = combineEpics(
-  AudioListEpic.getAudioData
+  AudioListEpic.getAudioData,
+  AudioListEpic.getDownloadData
 );
 
 export {
